@@ -46,3 +46,24 @@
   (loop repeat (len *dbstudent*) do (pop *dbstudent*))
   (loop repeat (len *dbcourse*) do (pop *dbcourse*))
   (loop repeat (len *dbenroll*) do (pop *dbenroll*)))
+
+(defun select-student (selector-fn)
+  (remove-if-not selector-fn *dbstudent*))
+
+(defun select-course (selector-fn)
+  (remove-if-not selector-fn *dbcourse*))
+
+(defun select-enroll (selector-fn)
+  (remove-if-not selector-fn *dbenroll*))
+
+(defun where (&key stu_id stu_name stu_faculty course_id course_name course_prof course_faculty grade)
+  #' (lambda (value)
+       (and
+        (if stu_id (equal (getf value :stu_id) stu_id) t)
+        (if stu_name (equal (getf value :stu_name) stu_name) t)
+        (if stu_faculty (equal (getf value :stu_faculty) stu_faculty) t)
+        (if course_id (equal (getf value :course_id) course_id) t)
+        (if course_name (equal (getf value :course_name) course_name) t)
+        (if course_prof (equal (getf value :course_prof) course_prof) t)
+        (if course_faculty (equal (getf value :course_faculty) course_faculty) t)
+        (if grade (equal (getf value :grade) grade) t))))
