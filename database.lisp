@@ -76,3 +76,34 @@
 
 (defun delete-enroll (selector-fn)
   (setf *dbenroll* (remove-if selector-fn *dbenroll*)))
+
+(defun update-student (selector-fn &key stu_id stu_name stu_faculty)
+  (setf *dbstudent*
+        (mapcar
+         #'(lambda (row)
+             (when (funcall selector-fn row)
+               (if stu_id    (setf (getf row :stu_id) stu_id))
+               (if stu_name   (setf (getf row :stu_name) stu_name))
+               (if stu_faculty   (setf (getf row :stu_faculty) stu_faculty)))
+             row) *dbstudent*)))
+
+(defun update-course (selector-fn &key course_id course_name course_prof course_faculty)
+  (setf *dbcourse*
+        (mapcar
+         #'(lambda (row)
+             (when (funcall selector-fn row)
+               (if course_id      (setf (getf row :course_id) course_id))
+               (if course_name    (setf (getf row :course_name) course_name))
+               (if course_prof    (setf (getf row :course_prof) course_prof))
+               (if course_faculty (setf (getf row :course_faculty) course_faculty)))
+             row) *dbcourse*)))
+
+(defun update-enroll (selector-fn &key stu_id course_id grade)
+  (setf *dbenroll*
+        (mapcar
+         #'(lambda (row)
+             (when (funcall selector-fn row)
+               (if stu_id    (setf (getf row :stu_id) stu_id))
+               (if course_id   (setf (getf row :course_id) course_id))
+               (if grade   (setf (getf row :grade) grade)))
+             row) *dbenroll*)))
