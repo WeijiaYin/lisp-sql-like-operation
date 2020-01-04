@@ -67,3 +67,12 @@
         (if course_prof (equal (getf value :course_prof) course_prof) t)
         (if course_faculty (equal (getf value :course_faculty) course_faculty) t)
         (if grade (equal (getf value :grade) grade) t))))
+
+(defun delete-student (selector-fn)
+  (setf *dbstudent* (remove-if selector-fn *dbstudent*)))
+
+(defun delete-course (selector-fn)
+  (setf *dbcourse* (remove-if selector-fn *dbcourse*)))
+
+(defun delete-enroll (selector-fn)
+  (setf *dbenroll* (remove-if selector-fn *dbenroll*)))
