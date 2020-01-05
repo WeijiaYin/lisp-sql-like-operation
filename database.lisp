@@ -17,6 +17,12 @@
 (defun insert-course (course) (push course *dbcourse*))
 (defun insert-enroll (enroll) (push enroll *dbenroll*))
 
+(defun insert-table (val val1 val2 val3 &optional val4)
+  (cond ((and (equal val "student") (null (select-student (where :stu_id val1)))) (insert-student (make-student val1 val2 val3)))
+        ((and (equal val "course") (null (select-course (where :course_id val1)))) (insert-course (make-course val1 val2 val3 val4)))
+        ((and (equal val "enroll") (null (select-ecnroll (where :stu_id val1 :course_id val2)))) (insert-enroll (make-enroll val1 val2 val3)))))
+
+
 (defun initdb ()
   (insert-student (make-student "10001" "Mary" "MiNI"))
   (insert-student (make-student "10002" "John" "MiNI"))
@@ -40,7 +46,7 @@
 (defun len (lst)
   (if (null lst)
       0
-     (+ (len (cdr lst)) 1)))
+    (+ (len (cdr lst)) 1)))
 
 (defun cleardb ()
   (loop repeat (len *dbstudent*) do (pop *dbstudent*))
