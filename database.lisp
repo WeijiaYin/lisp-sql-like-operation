@@ -68,18 +68,12 @@
         ((equal val "enroll") (select-enroll selector-fn)))
   )
 
+(defun make-comparisons-list (fields)
+  (loop while fields
+        collecting (make-comparison-expr (pop fields) (pop fields))))
 
-(defun where (&key stu_id stu_name stu_faculty course_id course_name course_prof course_faculty grade)
-  #' (lambda (value)
-       (and
-        (if stu_id (equal (getf value :stu_id) stu_id) t)
-        (if stu_name (equal (getf value :stu_name) stu_name) t)
-        (if stu_faculty (equal (getf value :stu_faculty) stu_faculty) t)
-        (if course_id (equal (getf value :course_id) course_id) t)
-        (if course_name (equal (getf value :course_name) course_name) t)
-        (if course_prof (equal (getf value :course_prof) course_prof) t)
-        (if course_faculty (equal (getf value :course_faculty) course_faculty) t)
-        (if grade (equal (getf value :grade) grade) t))))
+(defmacro where (&rest clauses)
+  `#'(lambda (cd) (and ,@(make-comparisons-list clauses))))
 
 (defun delete-student (selector-fn)
   (setf *dbstudent* (remove-if selector-fn *dbstudent*)))
