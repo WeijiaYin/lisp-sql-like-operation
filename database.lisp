@@ -53,6 +53,10 @@
   (loop repeat (len *dbcourse*) do (pop *dbcourse*))
   (loop repeat (len *dbenroll*) do (pop *dbenroll*)))
 
+(defmacro clear(table)
+  `(loop repeat (len ,table) do (pop ,table))
+  )
+
 (defun select-student (selector-fn)
   (remove-if-not selector-fn *dbstudent*))
 
